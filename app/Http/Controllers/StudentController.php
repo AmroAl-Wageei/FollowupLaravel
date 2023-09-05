@@ -14,7 +14,13 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return "jjjjjjjjjjjjjj";
+        // 1
+        // $Student = Student::get();
+        // return $Student;
+
+        // 2
+        $Student = Student::all();
+        return view('Student.view' , compact('Student'));
     }
 
     /**
@@ -24,7 +30,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('Student.create');
     }
 
     /**
@@ -33,9 +39,35 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // Insert 
     public function store(Request $request)
     {
-        //
+        // return $request;
+
+        // 1 - With Model 
+        // $Student = new Student();
+        // // Database Colum = Request Input
+        // $Student->Fame = $request->Fame;
+        // $Student->position = $request->position;
+        // $Student->company = $request->company;
+        // $Student->save();
+
+
+        // 2 - Way Number Two 
+        // We make sure use $fillable in model to insert in this way
+        // Student::create([
+        //     // "Database Colum"=>"Request Input",
+        //     "Fame" => $request->Fame,
+        //     "position" => $request->position,
+        //     "company" => $request->company,
+        // ]);
+
+
+        // 3 - Way Number Two 
+        // Must Database Colum and Request Input Same Same Same!!!
+        Student::create($request->all());
+
+        return response(' The Student Add Successfully');
     }
 
     /**
@@ -44,9 +76,12 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show()
     {
-        //
+        $Student = Student::onlyTrashed()->get();
+        return view('Student.softdelete' , compact('Student'));
+
+        // return $Student;
     }
 
     /**
@@ -55,9 +90,34 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    public function edit($id)
+    // public function edit(Student $student ,  $id)
     {
-        //
+        // return $id;
+
+
+        // 1
+        // $Student = Student::find($id);
+        // if($Student) {
+        //     return $Student;
+        // }else {
+        //     return response(' XXXXXXXXXXXXXXXXXXXXXXX' );
+        // }
+        // return $Student;
+
+
+
+        // 2 - Just check for ID
+        // $Student = Student::findorFail($id);
+        // return view('Student.edit' , compact('Student'));
+
+
+        // 3 - check Anything i want
+        $Student = Student::where("id" , $id)->first();
+        return view('Student.edit' , compact('Student'));
+
+
+ 
     }
 
     /**
@@ -67,9 +127,32 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $id)
     {
-        //
+        // 1
+        // $Student = Student::findorFail($id);
+        // $Student->Fame = $request->Fame;
+        // $Student->position = $request->position;
+        // $Student->company = $request->company;
+        // $Student->save();
+
+        // 2
+        // $Student = Student::findorFail($id);
+        // $Student->update([
+        //     "Fame" => $request->Fame,
+        //     "position" => $request->position,
+        //     "company" => $request->company,
+        // ]);
+
+        // 3
+        $Student = Student::findorFail($id);
+        $Student->update($request->all());;
+
+
+        return redirect()->route('student.index');
+        // return response(' The Student Update Successfully');
+        // return $Student;
+
     }
 
     /**
@@ -78,8 +161,16 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy($id)
     {
-        //
+
+        // 1
+        // Student::findorFail($id)->delete();
+        
+        // 2
+        Student::destroy($id);
+        
+        return redirect()->route('student.index');
+        // return $id;
     }
 }

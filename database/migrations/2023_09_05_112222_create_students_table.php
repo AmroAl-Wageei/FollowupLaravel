@@ -15,7 +15,11 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
+            $table->string("Fame");
+            $table->string("position");
+            $table->string("company")->default('Orange');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

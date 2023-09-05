@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,20 +43,56 @@ use App\Http\Controllers\StudentController;
 // Render Route - Controller -  View 
 // Render Route - Controller - Model -   View 
 
+// 1- Connection DB 
+// 2- php artisan make:model Student -mcr  
+// 3- push migration to DB 
+// 4- Resource Route
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 
 // Route::get( '/test',[StudentController::class , "index"]);
-Route::resource('/testt',[StudentController::class]);
+
+
+// Route::resource('/student', [StudentController::class]); XXX
+Route::resource('student', StudentController::class);  
 
 
 
-Route::get('/student', function () {
-    return view('student');
-});
 
-Route::get('/teacher', function () {
-    return view('teacher');
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Route::get('/student', function () {
+//     return view('student');
+// });
+
+// Route::get('/teacher', function () {
+//     return view('teacher');
+// });
